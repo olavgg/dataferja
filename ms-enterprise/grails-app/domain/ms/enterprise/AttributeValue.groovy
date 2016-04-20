@@ -47,9 +47,12 @@ class AttributeValue {
         id generator: 'sequence', params:[sequence:'attribute_value_seq']
         id index: 'attribute_value_id_idx'
         attribute index: 'attribute_value_attribute_idx'
+        attribute lazy: false
+        municipality index: 'attribute_value_municipality_idx'
 
         description type: 'text'
 
         valueType enumType:"ordinal"
+
     }
 }

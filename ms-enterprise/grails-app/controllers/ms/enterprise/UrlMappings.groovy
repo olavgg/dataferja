@@ -9,7 +9,11 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/index")
+        "/p/$id?(.$format)?"(
+                controller: 'image', action: 'show', namespace: 'media'
+        )
+        "/"(controller: 'default', action: 'index')
+
         "500"(view:'/error')
         "404"(view:'/notFound')
     }
