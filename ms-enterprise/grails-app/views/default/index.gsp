@@ -26,12 +26,13 @@
 					searchPlaceHolderText="${message(code: 'search.placeholder')}"
 					searchBtnText="${message(code: 'search.btn')}"/>
 
+			<!--
 			<button id="fetchBtn"
 					class="blue"
 					type="button">
 					<span class="text"><g:message code="fetch.data" /></span>
 					<i class="demo-icon icon-spin5 btn-spinner"></i>
-			</button>
+			</button> -->
 		</div>
 		<div class="fclear"></div>
 	</div>
@@ -58,7 +59,15 @@
 		new um.QueryField({
 			ele: document.getElementById("search-attributes"),
 			queryUrl: "/search/attributes",
-			cbFunction: handleSelectedAttribute
+			cbFunction: function (obj) {
+				handleSelectedAttribute(obj);
+				um.asyncFormSubmit(obj.event.target, {
+					complete: function(response){
+						var result = JSON.parse(response.responseText);
+						renderDataTable(result);
+					}
+				});
+			}
 		});
 
 		function handleSelectedMunicipality(obj){
@@ -138,40 +147,43 @@
 			var cell = document.createElement('TH');
 			cell.textContent = "Kommune";
 			thRow.appendChild(cell);
+
+			// Add Column Headers
 			for(var i = 0; i < obj.headers.length; i++){
 				cell = document.createElement('TH');
 				cell.textContent = obj.headers[i].text;
 				cell.setAttribute('data-label-id', obj.headers[i].id);
 				thRow.appendChild(cell);
 			}
+			// Add empty header cell
+			cell = document.createElement('TH');
+			thRow.appendChild(cell);
 
+			// Add rows
 			var tBodyEle = tableEle.createTBody();
 			var rows = [];
 			for(var i = 0; i < obj.rows.length; i++){
 				var row = tBodyEle.insertRow();
 				rows.push(row);
+				for(var y = 0; y < obj.rows[i].length; y++){
+					cell = document.createElement('TD');
+					cell.textContent = obj.rows[i][y].text;
+					if(y == 0){
+						row.setAttribute('data-muni-id', obj.rows[i][y].id);
+					}
+					row.appendChild(cell);
+				}
+				// Add empty cell
 				cell = document.createElement('TD');
-				cell.textContent = obj.rows[i].text;
-				row.setAttribute('data-muni-id', obj.rows[i].id);
 				row.appendChild(cell);
 			}
 
-			for(var i = 0; i < obj.values.length; i++){
-				console.log(obj.values);
-			}
 
-			document.getElementById('datatable').appendChild(tableEle);
+			var container = document.getElementById('datatable');
+			container.innerHTML = "";
+			container.appendChild(tableEle);
 		}
 
-		var fetchBtn = document.getElementById("fetchBtn");
-		fetchBtn.addEventListener('click', function(e){
-			um.asyncFormSubmit(e.target, {
-				complete: function(response){
-					var result = JSON.parse(response.responseText);
-					renderDataTable(result);
-				}
-			});
-		})
 	});
 </script>
 </body>

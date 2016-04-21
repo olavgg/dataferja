@@ -250,9 +250,9 @@ span.caret{
 #datatable table td{
 	padding: 0.6em;
 	font-weight: 300;
-	text-shadow: 0 1px 0 #38678f;
-	color: #fff;
+	color: #333;
 	border: 1px solid #ababc4;
+	text-align: right;
 }
 
 @font-face {
