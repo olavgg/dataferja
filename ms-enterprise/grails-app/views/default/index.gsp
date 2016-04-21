@@ -5,6 +5,12 @@
 	<meta name="layout" content="dataferja">
 </head>
 <body>
+	<header>
+		<div class="app-title-container" style="text-align:center">
+			<asset:image src="dataferja.png"/>
+			<h1>dataferja</h1>
+		</div>
+	</header>
 
 <g:form controller="fetch" action="values" method="POST" name="municipality_search">
 
@@ -43,6 +49,7 @@
 
 </g:form>
 <script type="application/javascript">
+
 
 	document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -183,6 +190,8 @@
 			container.innerHTML = "";
 			container.appendChild(tableEle);
 		}
+
+
 
 	});
 </script>

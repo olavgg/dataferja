@@ -462,6 +462,8 @@ um.domLoaded.escapeBtnEvent = function () {
 		}
 	}
 };
+
+
 um.domLoaded.addLoaderEventForButtons = function () {
 	var buttons = document.querySelectorAll("button.submit_button");
 	for (var i = 0; i < buttons.length; i++) {
