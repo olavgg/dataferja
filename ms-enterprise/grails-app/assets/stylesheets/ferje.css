@@ -257,7 +257,7 @@ span.caret{
 
 
 .menu {
-	height:60px;
+	margin-top:40px;
 	display:flex;
 	justify-content:space-around;
 	background-color: #bfeaf8;

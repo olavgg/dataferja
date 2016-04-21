@@ -16,16 +16,17 @@
 	<div class="menu">
 		<ul class="navList">
 			<li id="menu1" class="navLink selected">
-				<a>Kiosk</a>
+				<a>Kiosk (Dataset)
+				</a>
 			</li>
 			<li id="menu2" class="navLink">
-				<a>Bruå</a>
+				<a>Bruå (Heat map)</a>
 			</li>
 			<li id="menu3" class="navLink">
-				<a>Skandekk</a>
+				<a>Skandekk (Linjegraf)</a>
 			</li>
 			<li id="menu4" class="navLink">
-				<a>Maskinrom</a>
+				<a>Maskinrom (Import)</a>
 			</li>
 		</ul>
 	</div>
