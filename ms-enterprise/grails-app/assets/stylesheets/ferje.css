@@ -7,15 +7,13 @@ html, body, textarea, input {
 }
 body{
 	background: #fff;
+	width:100%x;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 h1,h2,h3,h4,h5{
 	margin: 0;
-}
-a {
-	color: #3598DC;
-	text-decoration: none;
-	cursor: pointer;
 }
 
 button{
@@ -253,6 +251,45 @@ span.caret{
 	color: #333;
 	border: 1px solid #ababc4;
 	text-align: right;
+}
+
+/*Navigation*/
+
+
+.menu {
+	height:60px;
+	display:flex;
+	justify-content:space-around;
+	background-color: #bfeaf8;
+}
+.navList {
+	list-style:none;
+	font-family:sans-serif;
+	color:#999;
+}
+.navLink {
+	display:inline-block;
+	margin:0px 20px;
+	cursor:pointer;
+	height:100%;
+}
+.navLink a {
+	line-height:60px;
+}
+.navLink:hover {
+	color: #219aff;
+}
+.selected {
+	color: #219aff;
+}
+.nav-description{
+	font-size:10px;
+}
+.container {
+	margin-top:60px;
+}
+.content {
+	color:#fff;
 }
 
 @font-face {
