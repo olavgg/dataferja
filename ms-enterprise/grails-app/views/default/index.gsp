@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<title><g:message code="app.title"/></title>
+	<title>Dataferja</title>
 	<meta name="layout" content="dataferja">
 </head>
 <body>
