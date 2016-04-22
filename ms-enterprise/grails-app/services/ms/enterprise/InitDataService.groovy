@@ -19,6 +19,8 @@ import org.apache.tika.mime.MimeType
 import reactor.spring.context.annotation.Consumer
 import reactor.spring.context.annotation.Selector
 
+import java.nio.charset.StandardCharsets
+
 @GrailsCompileStatic
 @Consumer
 @Transactional
@@ -67,131 +69,138 @@ class InitDataService {
 
     def initMunicipalities(){
 
-        String fp = "data/municipalities_norway.csv"
-        File fileHandler = new File(fp)
-        if(fileHandler.exists()){
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("data/municipalities_norway.csv"
+                        ), StandardCharsets.UTF_8)
+        );
+        String line = "";
+        String cvsSplitBy = ",";
+        long linesRead = 0;
 
-            SearchIndexCreator attrValIdx = SearchIndexCreator.instance
-            attrValIdx
-                    .setIndexName(SearchIndexCreator.MUNICIPALITY_IDX_NAME)
-                    .setMunicipalityMapping()
-                    .deleteIndex()
-                    .createIndexIfNotExists()
-
-
-            Map<String, County> counties = new HashMap<>()
-            counties.put('Østfold', County.findByNameLike('Østfold'))
-            counties.put('Akershus', County.findByNameLike('Akershus'))
-            counties.put('Oslo', County.findByNameLike('Oslo'))
-            counties.put('Hedmark', County.findByNameLike('Hedmark'))
-            counties.put('Oppland', County.findByNameLike('Oppland'))
-            counties.put('Buskerud', County.findByNameLike('Buskerud'))
-            counties.put('Vestfold', County.findByNameLike('Vestfold'))
-            counties.put('Telemark', County.findByNameLike('Telemark'))
-            counties.put('Aust-Agder', County.findByNameLike('Aust-Agder'))
-            counties.put('Vest-Agder', County.findByNameLike('Vest-Agder'))
-            counties.put('Rogaland', County.findByNameLike('Rogaland'))
-            counties.put('Hordaland', County.findByNameLike('Hordaland'))
-            counties.put('Sogn og Fjordane',
-                    County.findByNameLike('Sogn og Fjordane'))
-            counties.put('Møre og Romsdal',
-                    County.findByNameLike('Møre og Romsdal'))
-            counties.put('Sør-Trøndelag',
-                    County.findByNameLike('Sør-Trøndelag'))
-            counties.put('Nord-Trøndelag',
-                    County.findByNameLike('Nord-Trøndelag'))
-            counties.put('Nordland', County.findByNameLike('Nordland'))
-            counties.put('Troms', County.findByNameLike('Troms'))
-            counties.put('Finnmark', County.findByNameLike('Finnmark'))
-
-            log.debug(counties.get("Oslo"))
+        SearchIndexCreator attrValIdx = SearchIndexCreator.instance
+        attrValIdx
+                .setIndexName(SearchIndexCreator.MUNICIPALITY_IDX_NAME)
+                .setMunicipalityMapping()
+                .deleteIndex()
+                .createIndexIfNotExists()
 
 
-            Attribute admSenter = new Attribute(label: "Adm. senter")
-            admSenter.save()
-            BulkAttrInsert.index(admSenter)
+        Map<String, County> counties = new HashMap<>()
+        counties.put('Østfold', County.findByNameLike('Østfold'))
+        counties.put('Akershus', County.findByNameLike('Akershus'))
+        counties.put('Oslo', County.findByNameLike('Oslo'))
+        counties.put('Hedmark', County.findByNameLike('Hedmark'))
+        counties.put('Oppland', County.findByNameLike('Oppland'))
+        counties.put('Buskerud', County.findByNameLike('Buskerud'))
+        counties.put('Vestfold', County.findByNameLike('Vestfold'))
+        counties.put('Telemark', County.findByNameLike('Telemark'))
+        counties.put('Aust-Agder', County.findByNameLike('Aust-Agder'))
+        counties.put('Vest-Agder', County.findByNameLike('Vest-Agder'))
+        counties.put('Rogaland', County.findByNameLike('Rogaland'))
+        counties.put('Hordaland', County.findByNameLike('Hordaland'))
+        counties.put('Sogn og Fjordane',
+                County.findByNameLike('Sogn og Fjordane'))
+        counties.put('Møre og Romsdal',
+                County.findByNameLike('Møre og Romsdal'))
+        counties.put('Sør-Trøndelag',
+                County.findByNameLike('Sør-Trøndelag'))
+        counties.put('Nord-Trøndelag',
+                County.findByNameLike('Nord-Trøndelag'))
+        counties.put('Nordland', County.findByNameLike('Nordland'))
+        counties.put('Troms', County.findByNameLike('Troms'))
+        counties.put('Finnmark', County.findByNameLike('Finnmark'))
 
-            Attribute folkeTall = new Attribute(label: "Folketall")
-            folkeTall.save()
-            BulkAttrInsert.index(folkeTall)
+        log.debug(counties.get("Oslo"))
 
-            Attribute areal = new Attribute(label: "Areal")
-            areal.save()
-            BulkAttrInsert.index(areal)
 
-            Attribute maalform = new Attribute(label: "Målform")
-            maalform.save()
-            BulkAttrInsert.index(maalform)
+        Attribute admSenter = new Attribute(label: "Adm. senter")
+        admSenter.save()
+        BulkAttrInsert.index(admSenter)
 
-            Attribute ordforer = new Attribute(label: "Ordfører")
-            ordforer.save()
-            BulkAttrInsert.index(ordforer)
+        Attribute folkeTall = new Attribute(label: "Folketall")
+        folkeTall.save()
+        BulkAttrInsert.index(folkeTall)
 
-            Attribute parti = new Attribute(label: "Parti")
-            parti.save()
-            BulkAttrInsert.index(parti)
+        Attribute areal = new Attribute(label: "Areal")
+        areal.save()
+        BulkAttrInsert.index(areal)
 
-            fileHandler.splitEachLine(",") { fields -> // ArrayList<String>
-                Municipality municipality = new Municipality(
-                        number: fields[0],
-                        county: counties.get(fields[3]),
-                        name: fields[1],
-                )
-                if (municipality.validate() && municipality.save()) {
-                    log.debug("saved ${municipality.name} " +
-                            "with id: ${municipality.id}")
+        Attribute maalform = new Attribute(label: "Målform")
+        maalform.save()
+        BulkAttrInsert.index(maalform)
 
-                    BulkAttrInsert.index(
-                            municipality,
-                            SearchIndexCreator.MUNICIPALITY_IDX_NAME
-                    )
+        Attribute ordforer = new Attribute(label: "Ordfører")
+        ordforer.save()
+        BulkAttrInsert.index(ordforer)
 
-                    attributeService.saveAttribute(
-                            municipality,
-                            admSenter,
-                            fields[2]
-                    )
+        Attribute parti = new Attribute(label: "Parti")
+        parti.save()
+        BulkAttrInsert.index(parti)
 
-                    attributeService.saveAttribute(
-                            municipality,
-                            folkeTall,
-                            Long.valueOf(fields[4])
-                    )
-
-                    attributeService.saveAttribute(
-                            municipality,
-                            areal,
-                            Long.valueOf(fields[5])
-                    )
-
-                    attributeService.saveAttribute(
-                            municipality,
-                            maalform,
-                            fields[8]
-                    )
-                    attributeService.saveAttribute(
-                            municipality,
-                            ordforer,
-                            fields[9]
-                    )
-
-                    attributeService.saveAttribute(
-                            municipality,
-                            parti,
-                            fields[10]
-                    )
-
-                    InitImages.LOGOLIST.add(
-                            new InitImages(municipality.id, new URL(fields[7]))
-                    )
-                } else {
-                    municipality.errors.allErrors.each { log.error it }
-                }
+        while ((line = reader.readLine()) != null){
+            String[] fields = line.split(cvsSplitBy);
+            if(fields[0].length() == 3){
+                fields[0] = "0" + fields[0]
             }
-            log.info("Done inserting Municipalities")
-            log.info("Flushing....")
-        }
+            Municipality municipality = new Municipality(
+                    number: fields[0],
+                    county: counties.get(fields[3]),
+                    name: fields[1],
+            )
+            if (municipality.validate() && municipality.save()) {
+                log.debug("saved ${municipality.name} " +
+                        "with id: ${municipality.id}")
 
+                BulkAttrInsert.index(
+                        municipality,
+                        SearchIndexCreator.MUNICIPALITY_IDX_NAME
+                )
+
+                attributeService.saveAttribute(
+                        municipality,
+                        admSenter,
+                        fields[2]
+                )
+
+                attributeService.saveAttribute(
+                        municipality,
+                        folkeTall,
+                        Long.valueOf(fields[4])
+                )
+
+                attributeService.saveAttribute(
+                        municipality,
+                        areal,
+                        Long.valueOf(fields[5])
+                )
+
+                attributeService.saveAttribute(
+                        municipality,
+                        maalform,
+                        fields[8]
+                )
+                attributeService.saveAttribute(
+                        municipality,
+                        ordforer,
+                        fields[9]
+                )
+
+                attributeService.saveAttribute(
+                        municipality,
+                        parti,
+                        fields[10]
+                )
+
+                InitImages.LOGOLIST.add(
+                        new InitImages(municipality.id, new URL(fields[7]))
+                )
+            } else {
+                municipality.errors.allErrors.each { log.error it }
+            }
+        }
+        log.info("Done inserting Municipalities")
+        log.info("Flushing....")
     }
 
     def insertImages(){
