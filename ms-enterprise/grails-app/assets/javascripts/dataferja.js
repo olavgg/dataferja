@@ -6,12 +6,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	new um.QueryField({
 		ele: document.getElementById("search-municipalities"),
 		queryUrl: "/search/municipality",
-		cbFunction: function(result){
-			for(var i = 0; i < result.ids.length; i++){
-				um.getMunicipality(result.ids[i], function(obj){
+		cbFunction: function(result) {
+			for (var i = 0; i < result.ids.length; i++) {
+				um.getMunicipality(result.ids[i], function (obj) {
 					handleSelectedMunicipality(obj);
 				});
 			}
+		}
+	});
 
 	new um.QueryField({
 		ele: document.getElementById("search-attributes"),
@@ -188,32 +190,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 	});
 
-	function renderHeatMap(obj){
+	function renderHeatMap(obj) {
 
 		//#X-axis : Variables
 		var headerTitles = [];
-		for(var i = 0; i < obj.headers.length; i++){
+		for (var i = 0; i < obj.headers.length; i++) {
 			headerTitles.push(obj.headers[i].text);
 		}
 		console.log(headerTitles);
 
 		//#X-axis : Variable Meta
 		headerTitlesLength = obj.headers.length;
-		if (headerTitlesLength == 1){
-			headerTitlesLength=1;
+		if (headerTitlesLength == 1) {
+			headerTitlesLength = 1;
 			console.log(headerTitlesLength);
 		}
 
 		//#Y-axis : Municipalities
 		var rowTitles = [];
-		for(var i = 0; i < obj.rows.length; i++){
+		for (var i = 0; i < obj.rows.length; i++) {
 			rowTitles.push(obj.rows[i][0].text);
 		}
 		console.log(rowTitles);
 
 		// Municipality meta:
 
-		yAxisMax = obj.rows.length-0.500;
+		yAxisMax = obj.rows.length - 0.500;
 		yAxisMin = -0.500;
 
 		// Data values:
@@ -222,10 +224,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		console.log(obj.rows);
 		values_only = []
 
-		for(var i = 0; i < obj.rows.length; i++) {
-			for(var y = 1; y < obj.rows[i].length; y++) {
+		for (var i = 0; i < obj.rows.length; i++) {
+			for (var y = 1; y < obj.rows[i].length; y++) {
 				console.log(y + " " + i + " " + obj.rows[i][y].text);
-				tableValues.push({col: y-1, row: i, y: obj.rows[i][y].text });
+				tableValues.push({col: y - 1, row: i, y: obj.rows[i][y].text});
 				values_only.push(obj.rows[i][y].text);
 				console.log(values_only);
 			}
@@ -238,28 +240,35 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		var minValue = Math.min.apply(Math, values_only);
 		var maxValue = Math.max.apply(Math, values_only);
 
-		console.log("min: "+minValue);
-		console.log("max: "+maxValue);
+		console.log("min: " + minValue);
+		console.log("max: " + maxValue);
 
 		//Valueranges for color:
 
-		ranges = range(minValue,maxValue,(maxValue/10.00));
+		ranges = range(minValue, maxValue, (maxValue / 10.00));
 		colors = ['white', '#f6fef5', '#ecfceb', '#e3fbe1',
 			'#d9fad6', '#d0f8cc', '#c6f7c2', '#bcf5b8',
 			'#b1f3ae', '#a7f2a4', '#9cf09a', '#90ee90'];
 
 		var colormap = [];
-		for(var i=0; i < ranges.length; i++) {
-			if((ranges[i] < 0) || (ranges[i+1] < 0)){
-				colormap.push({ from: ranges[i], to:ranges[i+1], color: 'red'})
+		for (var i = 0; i < ranges.length; i++) {
+			if ((ranges[i] < 0) || (ranges[i + 1] < 0)) {
+				colormap.push({
+					from: ranges[i],
+					to: ranges[i + 1],
+					color: 'red'
+				})
 			}
 			else {
-				colormap.push({ from: ranges[i], to:ranges[i+1], color: colors[i]})
+				colormap.push({
+					from: ranges[i],
+					to: ranges[i + 1],
+					color: colors[i]
+				})
 			}
 		}
 
 		console.log(colormap);
-
 
 
 		console.log(ranges);
@@ -279,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			xAxis: {
 				categories: headerTitles,
 				min: 0,
-				max: headerTitlesLength-1
+				max: headerTitlesLength - 1
 			},
 			yAxis: {
 				categories: rowTitles,
@@ -311,19 +320,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			}]
 		});
 
-
-
-
-
 	}
 
-
-
-
-
 });
-
-
 
 //[{
 //	to: ranges[0],
