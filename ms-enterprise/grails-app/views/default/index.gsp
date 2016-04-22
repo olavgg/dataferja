@@ -71,7 +71,6 @@
 
 		<div id="heatmap" class="ferry-container" style="display:none">
 			<div id="heat-container" style="height: 300px; width:50%;"></div>
-			<div id="heat-container2" style="height: 300px; width:50%;"></div>
 		</div>
 		<div id="barchart" class="ferry-container" style="display:none">
 			<h5>barchart goes here</h5>
