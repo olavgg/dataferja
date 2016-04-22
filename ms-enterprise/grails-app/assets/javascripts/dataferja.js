@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 					var result = JSON.parse(response.responseText);
 					renderDataTable(result);
 					renderHeatMap(result);
+					//Remove messy legend
+					//$('.highcharts-legend').hide();
+					//$('.highcharts-axis').hide();
 				}
 			});
 		}
@@ -240,9 +243,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		//Valueranges for color:
 
 		ranges = range(minValue,maxValue,(maxValue/10.00));
+		colors = ['white', '#f6fef5', '#ecfceb', '#e3fbe1',
+			'#d9fad6', '#d0f8cc', '#c6f7c2', '#bcf5b8',
+			'#b1f3ae', '#a7f2a4', '#9cf09a', '#90ee90'];
+
+		var colormap = [];
+		for(var i=0; i < ranges.length; i++) {
+			if((ranges[i] < 0) || (ranges[i+1] < 0)){
+				colormap.push({ from: ranges[i], to:ranges[i+1], color: 'red'})
+			}
+			else {
+				colormap.push({ from: ranges[i], to:ranges[i+1], color: colors[i]})
+			}
+		}
+
+		console.log(colormap);
+
+
+
 		console.log(ranges);
-
-
 
 
 		console.log(tableValues);
@@ -253,10 +272,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				type: 'heatmap'
 			},
 			title: {
-				text: 'Variabelbasert varmekart'
+				text: ''
+
 			},
 			xAxis: {
-				categories: headerTitles.reverse(),
+				categories: headerTitles,
 				min: 0,
 				max: headerTitlesLength-1
 			},
@@ -283,18 +303,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				borderWidth: 0,
 				data: tableValues,
 				// Color ranges for the legend
-				valueRanges: [{
-					to: ranges[0],
-					color: 'green'
-				}, {
-					from: ranges[1],
-					to: ranges[2],
-					color: 'red'
-				}, {
-					from: ranges[3],
-					to: ranges[4],
-					color: 'purple'
-				}]
+
+
+				valueRanges: colormap
 
 			}]
 		});
@@ -310,3 +321,53 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 });
+
+
+
+//[{
+//	to: ranges[0],
+//	color: colors[0]
+//}, {
+//	from: ranges[0],
+//	to: ranges[1],
+//	color: colors[1]
+//}, {
+//	from: ranges[1],
+//	to: ranges[2],
+//	color: colors[2]
+//}, {
+//	from: ranges[2],
+//	to: ranges[3],
+//	color: colors[3]
+//}, {
+//	from: ranges[3],
+//	to: ranges[4],
+//	color: colors[4]
+//}, {
+//	from: ranges[4],
+//	to: ranges[5],
+//	color: colors[5]
+//}, {
+//	from: ranges[5],
+//	to: ranges[6],
+//	color: colors[6]
+//}, {
+//	from: ranges[6],
+//	to: ranges[7],
+//	color: colors[7]
+//}, {
+//	from: ranges[7],
+//	to: ranges[8],
+//	color: colors[8]
+//}, {
+//	from: ranges[8],
+//	to: ranges[9],
+//	color: colors[9]
+//}, {
+//	from: ranges[9],
+//	to: ranges[10],
+//	color: colors[10]
+//},  {
+//	from: ranges[11],
+//	color: colors[11]
+//}]

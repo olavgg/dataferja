@@ -285,8 +285,16 @@ span.caret{
 	font-size:10px;
 }
 .container {
-	margin-top:60px;
+	margin-top: 60px;
 }
+
+.heatmap-wrapper {
+	margin-top: 60px;
+	display: flex;
+	justify-content: center;
+	margin-right: 120px;
+}
+
 .content {
 	color:#fff;
 }
