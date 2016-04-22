@@ -70,7 +70,6 @@ class SearchController {
                 } else {
                     renderResult.hits = []
                 }
-                log.debug(renderResult)
                 render renderResult as JSON
                 return
 
