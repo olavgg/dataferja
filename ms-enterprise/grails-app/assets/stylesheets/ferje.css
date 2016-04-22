@@ -202,6 +202,10 @@ div.sm-complex-search ul.results li.selectable-result.selected{
 	background: #0C99D5;
 	color: #fff;
 }
+div.sm-complex-search ul.results li.selectable-result.chosen{
+	background: #69ae12;
+	color: #fff;
+}
 
 span.caret{
 	display: inline-block;

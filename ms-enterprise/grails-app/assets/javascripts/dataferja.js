@@ -3,22 +3,23 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
 
-
 	new um.QueryField({
 		ele: document.getElementById("search-municipalities"),
 		queryUrl: "/search/municipality",
 		cbFunction: function(result){
-			um.getMunicipality(result.id, function(obj){
-				handleSelectedMunicipality(obj);
-			});
-		}
-	});
+			for(var i = 0; i < result.ids.length; i++){
+				um.getMunicipality(result.ids[i], function(obj){
+					handleSelectedMunicipality(obj);
+				});
+			}
 
 	new um.QueryField({
 		ele: document.getElementById("search-attributes"),
 		queryUrl: "/search/attributes",
 		cbFunction: function (obj) {
-			handleSelectedAttribute(obj);
+			for(var i = 0; i < obj.ids.length; i++) {
+				handleSelectedAttribute(obj.ids[i], obj.texts[i]);
+			}
 			um.asyncFormSubmit(obj.event.target, {
 				complete: function(response){
 					var result = JSON.parse(response.responseText);
@@ -86,12 +87,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 	}
 
-	function handleSelectedAttribute(obj){
+	function handleSelectedAttribute(objId, objText){
 		var chosenEle = document.getElementById("chosen-attributes");
 		var values = chosenEle.querySelectorAll("input[type='hidden'");
 		var addAttr = true;
 		for(var i = 0; i < values.length; i++){
-			if(values[i].value == obj.id){
+			if(values[i].value == objId){
 				addAttr = false;
 				break;
 			}
@@ -99,13 +100,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		if(addAttr){
 			var ele = document.createElement("SPAN");
 			ele.className = "chosen-attr fleft";
-			ele.textContent = obj.text;
+			ele.textContent = objText;
 			ele.addEventListener('click', removeChosenItem);
-			ele.setAttribute('data-id', obj.id);
+			ele.setAttribute('data-id', objId);
 
 			var inputEle = document.createElement("INPUT");
 			inputEle.name = "attr_id";
-			inputEle.value = obj.id;
+			inputEle.value = objId;
 			inputEle.type = "hidden";
 
 			chosenEle.appendChild(ele);

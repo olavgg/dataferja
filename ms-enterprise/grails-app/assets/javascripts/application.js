@@ -351,17 +351,32 @@ um.QueryField.prototype.handleKeyDown = function (e) {
 			selectableItems[selectedIndex].parentNode.scrollTop =
 				(selectableItems[selectedIndex + 1].scrollHeight * selectedIndex);
 		}
+	} else if (e.keyCode == 39 || e.keyCode == 37) { // key arrow right
+		if(selectableItems[selectedIndex].classList.contains("chosen")){
+			selectableItems[selectedIndex].classList.remove("chosen");
+		} else {
+			selectableItems[selectedIndex].classList.add("chosen");
+		}
 	} else if (e.keyCode == 13) { // key return
+		var chosen = [];
+		var texts = [];
 		for (var i = 0; i < selectableItems.length; i++) {
-			if (selectableItems[i].classList.contains("selected")) {
-				this.queryElement.classList.add('hidden');
-				this.cbFunc({
-					id: selectableItems[i].getAttribute('data-id'),
-					text: selectableItems[i].textContent,
-					event: e
-				});
+			if (selectableItems[i].classList.contains("selected") ||
+				selectableItems[i].classList.contains("chosen")) {
+				
+				chosen.push(selectableItems[i].getAttribute('data-id'))
+				texts.push(selectableItems[i].textContent)
 			}
 		}
+		this.queryElement.classList.add('hidden');
+		if(chosen.length > 0){
+			this.cbFunc({
+				ids: chosen,
+				texts: texts,
+				event: e
+			});
+		}
+		
 		e.preventDefault();
 	}
 };
