@@ -31,7 +31,7 @@ class ElasticQueries {
     "match_phrase_prefix": {
       "label": {
         "query": "${query}",
-        "slop": 10
+        "slop": 50
       }
     }
   },

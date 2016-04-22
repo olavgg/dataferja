@@ -1,15 +1,15 @@
 package ms.enterprise.helpers;
 
-import com.google.common.math.DoubleMath;
 import grails.util.Holders;
 import ms.enterprise.Attribute;
 import ms.enterprise.Municipality;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.math.RoundingMode;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,16 +54,14 @@ public class BufferedCsvReader {
 
                 if(linesRead == 3){
                     for(int i = 2; i < fields.length; i++){
-                        String label = "Folkemengd og endringar hittil i år";
-                        String headerName = fields[i]
-                                .replaceAll("[^\\p{L}\\p{N}]+", "");
-                        headers.add(label + " - " + headerName);
+                        String headerName = fields[i];
+                        headers.add(headerName);
                     }
                 }
                 if(linesRead > 3){
                     fields[0] = fields[0].replaceAll("[\".]", "");;
                     if(fields[0].length() < 2 && linesRead < 16){
-                        createAttribute(fields);
+                        createAttribute(fields[1]);
                     } else if(fields[0].length() > 1) {
                         this.municipality =
                                 attrService.getMunicipality(fields[0]);
@@ -71,14 +69,13 @@ public class BufferedCsvReader {
                     }
 
                     if(fields[0].length() < 2 && this.municipality != null){
-                        createValue(fields, range);
+                        createValue(fields, range, 2);
                         range++;
                     }
 
                 }
                 linesRead++;
                 if(linesRead == 5140){
-                    log.debug(line);
                     break;
                 }
             }
@@ -89,18 +86,17 @@ public class BufferedCsvReader {
         }
     }
 
-    private void createAttribute(String[] fields){
-        String tmpLabel = fields[1].replaceAll("[^\\p{L}\\p{N}]+", "");
+    private void createAttribute(String field){
         for(String header : headers){
-            labels.add(attrService.save(header + " - " + tmpLabel));
+            labels.add(attrService.save(field + " - " + header));
         }
 
     }
 
-    private void createValue(String[] fields, int range){
-        int start = (fields.length -2) * range;
-        for(int i = 2 ; i < fields.length; i++){
-            int labelPos = i + (start-2);
+    private void createValue(String[] fields, int range, int hPos){
+        int start = (fields.length - hPos) * range;
+        for(int i = hPos ; i < fields.length; i++){
+            int labelPos = i + (start-hPos);
             Attribute attribute = labels.get(labelPos);
             long value = 0;
             try{
@@ -152,7 +148,7 @@ public class BufferedCsvReader {
 
                 if(linesRead == 3){
                     for(int i = 2; i < fields.length; i++){
-                        String label = "Nettoforbruk av elektrisk kraft (KWh)";
+                        String label = "Nettoforbruk kraft (KWh)";
                         String headerName = fields[i]
                                 .replaceAll("[^\\p{L}\\p{N}]+", "");
                         headers.add(label + " - " + headerName);
@@ -161,7 +157,7 @@ public class BufferedCsvReader {
                 if(linesRead > 4){
                     fields[0] = fields[0].replaceAll("[\".]", "");;
                     if(fields[0].length() < 2 && linesRead < 16){
-                        createAttribute(fields);
+                        createAttribute(fields[1]);
                     } else if(fields[0].length() > 1) {
                         this.municipality =
                                 attrService.getMunicipality(fields[0]);
@@ -176,7 +172,122 @@ public class BufferedCsvReader {
                 }
                 linesRead++;
                 if(linesRead == 3453){
-                    log.debug(line);
+                    break;
+                }
+            }
+            attrService.saveAttrVal(values);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void readInnERMenn(){
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(
+                                    "data/innvandrereetterregion_menn.csv"
+                            ), StandardCharsets.ISO_8859_1)
+            );
+            String line = "";
+            String cvsSplitBy = ";";
+            long linesRead = 0;
+
+            int range = 0;
+            while ((line = reader.readLine()) != null){
+                String[] fields = line.split(cvsSplitBy);
+
+                if(linesRead == 2){
+                    for(int i = 3; i < fields.length; i++){
+                        String label = "Innvandrere - Menn";
+                        String headerName = fields[i]
+                                .replaceAll("[^\\p{L}\\p{N}]+", "");
+                        headers.add(label + " - " + headerName);
+                    }
+                }
+                if(linesRead > 3){
+                    fields[0] = fields[0].replaceAll("[\".]", "");;
+                    if(fields[0].length() < 2 &&
+                            linesRead < 15 &&
+                            fields[1].length() < 2){
+                        createAttribute(fields[2]);
+                    } else if(fields[0].length() > 1) {
+                        this.municipality =
+                                attrService.getMunicipality(fields[0]);
+                        range = 0;
+                    }
+
+                    if(fields[0].length() < 2 &&
+                            this.municipality != null &&
+                            fields[1].length() < 2){
+                        createValue(fields, range, 3);
+                        range++;
+                    }
+
+                }
+                linesRead++;
+                if(linesRead == 4284){
+                    break;
+                }
+            }
+            attrService.saveAttrVal(values);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readInnERKvinner(){
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(
+                                    "data/innvandrereetterregion_kvinner.csv"
+                            ), StandardCharsets.ISO_8859_1)
+            );
+            String line = "";
+            String cvsSplitBy = ";";
+            long linesRead = 0;
+
+            int range = 0;
+            while ((line = reader.readLine()) != null){
+                String[] fields = line.split(cvsSplitBy);
+
+                if(linesRead == 2){
+                    for(int i = 3; i < fields.length; i++){
+                        String label = "Innvandrere - Kvinner";
+                        String headerName = fields[i]
+                                .replaceAll("[^\\p{L}\\p{N}]+", "");
+                        headers.add(label + " - " + headerName);
+                    }
+                }
+                if(linesRead > 3){
+                    fields[0] = fields[0].replaceAll("[\".]", "");
+
+                    if(fields[0].length() < 2 &&
+                            linesRead < 15 &&
+                            fields.length > 2){
+                        createAttribute(fields[2].replaceAll("[\"]+", ""));
+                    } else if(fields[0].length() > 1) {
+                        this.municipality =
+                                attrService.getMunicipality(fields[0]);
+                        range = 0;
+                    }
+
+                    if(fields[0].length() < 2 &&
+                            this.municipality != null &&
+                            fields.length > 2){
+                        createValue(fields, range, 3);
+                        range++;
+                    }
+
+                }
+                linesRead++;
+                if(linesRead == 4284){
                     break;
                 }
             }

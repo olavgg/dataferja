@@ -17,7 +17,7 @@ environments:
                 host: juleferja
                 port: 9200
             dataSource:
-                dbCreate: create-drop
+                dbCreate: create
                 url: jdbc:postgresql://juleferja:5432/juleferja
                 username: svele
                 password: kaffi

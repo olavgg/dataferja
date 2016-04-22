@@ -21,7 +21,6 @@ class MainInitService {
     def init() {
         JestPool.initialize()
 
-        log.debug(Environment.currentEnvironment)
         if(Environment.currentEnvironment.equals(Environment.DEVELOPMENT)) {
             log.info('LASTER OPP FERJA MED TRAILERE SOM HAR HARDDISKER!')
 
@@ -50,13 +49,23 @@ class MainInitService {
                 initDataService.insertImages()
 
                 BufferedCsvReader bcr = new BufferedCsvReader()
-                bcr.readForbrukerKraft()
+
+                bcr.readInnERMenn()
+                notify("attr.doattrsinsert.event", "ok")
+                notify("attr.doattrvalsinsert.event", "ok")
+
+                bcr.readInnERKvinner()
                 notify("attr.doattrsinsert.event", "ok")
                 notify("attr.doattrvalsinsert.event", "ok")
 
                 bcr.readFolkeMengdeOgBVekst()
                 notify("attr.doattrsinsert.event", "ok")
                 notify("attr.doattrvalsinsert.event", "ok")
+
+                bcr.readForbrukerKraft()
+                notify("attr.doattrsinsert.event", "ok")
+                notify("attr.doattrvalsinsert.event", "ok")
+
             }
             list.onComplete {
                 log.info("NÅ KAN FERJÅ LEGGA FRÅ KAI!!!")
