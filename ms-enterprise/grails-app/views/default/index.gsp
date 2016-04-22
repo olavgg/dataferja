@@ -2,7 +2,11 @@
 <html>
 <head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://github.highcharts.com/v3.0.2/modules/map.src.js"></script>
 	<asset:javascript src="dataferja.js"/>
+	<asset:javascript src="ferja-varmekart.js"/>
+	%{--<asset:javascript src="ferja-temp.js"/>--}%
 	<title>Dataferja</title>
 	<meta name="layout" content="dataferja">
 </head>
@@ -66,7 +70,8 @@
 		</div>
 
 		<div id="heatmap" class="ferry-container" style="display:none">
-			<h1>heatmap goes here</h1>
+			<div id="heat-container" style="height: 300px; width:50%;"></div>
+			<div id="heat-container2" style="height: 300px; width:50%;"></div>
 		</div>
 		<div id="barchart" class="ferry-container" style="display:none">
 			<h5>barchart goes here</h5>

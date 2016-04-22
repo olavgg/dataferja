@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 	});
 
+
+
 	new um.QueryField({
 		ele: document.getElementById("search-attributes"),
 		queryUrl: "/search/attributes",
@@ -23,10 +25,111 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				complete: function(response){
 					var result = JSON.parse(response.responseText);
 					renderDataTable(result);
+					generateHeatmapMeta(result);
 				}
 			});
 		}
 	});
+
+	function generateHeatmapMeta(obj){
+
+		//#X-axis : Variables
+		var headerTitles = [];
+		for(var i = 0; i < obj.headers.length; i++){
+			headerTitles.push(obj.headers[i].text);
+		}
+		console.log(headerTitles);
+
+		//#X-axis : Variable Meta
+		headerTitlesLength = obj.headers.length;
+		if (headerTitlesLength == 1){
+			headerTitlesLength=1;
+			console.log(headerTitlesLength);
+		}
+
+		//#Y-axis : Municipalities
+		var rowTitles = [];
+		for(var i = 0; i < obj.rows.length; i++){
+			rowTitles.push(obj.rows[i][0].text);
+			}
+		console.log(rowTitles);
+
+		// Municipality meta:
+
+		yAxisMax = obj.rows.length-0.500;
+		yAxisMin = -0.500;
+
+		// Data values:
+		var tableValues = [];
+
+		console.log(obj.rows);
+
+		for(var i = 0; i < obj.rows.length; i++) {
+			for(var y = 1; y < obj.rows[i].length; y++) {
+				console.log(y + " " + i + " " + obj.rows[i][y].text);
+				tableValues.push({col: y-1, row: i, y: obj.rows[i][y].text });
+			}
+		}
+
+
+
+		console.log(tableValues);
+
+		var chart = new Highcharts.Chart({
+			chart: {
+				renderTo: 'heat-container2',
+				type: 'heatmap'
+			},
+			title: {
+				text: 'Variabelbasert varmekart'
+			},
+			xAxis: {
+				categories: headerTitles.reverse(),
+				min: 0,
+				max: headerTitlesLength-1
+			},
+			yAxis: {
+				categories: rowTitles,
+				min: -0.50,
+				max: yAxisMax, //Dynamic ferje-spesial!
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false
+			},
+			tooltip: {
+				formatter: function () {
+					return this.series.yAxis.categories[this.point.row] + ': <b>' +
+						this.y + ' ' +
+						this.series.xAxis.categories[this.point.col] + '</b>';
+				}
+			},
+			legend: {
+				valueDecimals: 0
+			},
+			series: [{
+				borderWidth: 0,
+				data: tableValues,
+				// Color ranges for the legend
+				valueRanges: [{
+					to: 1000,
+					color: 'green'
+				}, {
+					from: 10000,
+					to: 30000,
+					color: 'red'
+				}, {
+					from: 50000,
+					to: 10000,
+					color: 'purple'
+				}]
+
+			}]
+		});
+
+
+
+	}
 
 	um.domLoaded.escapeBtnEvent = function () {
 		document.onkeydown = function (e) {
