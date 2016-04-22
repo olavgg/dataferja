@@ -404,8 +404,8 @@ um.QueryField.prototype.handleMouse = function () {
 		selectableItems[i].addEventListener('click', function (e) {
 			this.queryElement.classList.add('hidden');
 			this.cbFunc({
-				id: e.target.getAttribute('data-id'),
-				text: e.target.textContent,
+				ids: [e.target.getAttribute('data-id')],
+				texts: [e.target.textContent],
 				event: e
 			});
 		}.bind(this));

@@ -1,6 +1,5 @@
 package ms.enterprise
 
-import grails.compiler.GrailsCompileStatic
 import grails.transaction.Transactional
 import groovy.sql.Sql
 import ms.enterprise.helpers.AttributeStore
@@ -50,6 +49,7 @@ class AttributeStoreService implements AttributeStore{
         Sql db = new Sql(dataSource)
         try {
             db.withTransaction {
+                int counter = 0
                 for(Map<Object, Object> item : items){
 
                     List<List<Object>> results = db.executeInsert([
@@ -79,7 +79,12 @@ class AttributeStoreService implements AttributeStore{
                     )
                     item.id = (long)results.get(0).get(0)
                     BulkAttrInsert.index(item)
+                    counter++
+                    if( (counter % 1000) == 0){
+                        log.debug("inserted $counter rows...")
+                    }
                 }
+
 
             }
         } catch (RuntimeException | SQLException e){

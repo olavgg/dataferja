@@ -206,13 +206,14 @@ public class BufferedCsvReader {
                         String headerName = fields[i]
                                 .replaceAll("[^\\p{L}\\p{N}]+", "");
                         headers.add(label + " - " + headerName);
+                        log.debug(label + " - " + headerName);
                     }
                 }
                 if(linesRead > 3){
                     fields[0] = fields[0].replaceAll("[\".]", "");;
                     if(fields[0].length() < 2 &&
                             linesRead < 15 &&
-                            fields[1].length() < 2){
+                            fields.length > 2){
                         createAttribute(fields[2]);
                     } else if(fields[0].length() > 1) {
                         this.municipality =
@@ -222,7 +223,7 @@ public class BufferedCsvReader {
 
                     if(fields[0].length() < 2 &&
                             this.municipality != null &&
-                            fields[1].length() < 2){
+                            fields.length > 2){
                         createValue(fields, range, 3);
                         range++;
                     }

@@ -44,25 +44,31 @@ class MainInitService {
 
                 initDataService.init()
                 notify("attr.doattrsinsert.event", "ok")
-                notify("attr.doattrvalsinsert.event", "ok")
+                initDataService.doAttrValsInsert([:])
                 notify("attr.domunicipalityinsert.event", "ok")
                 initDataService.insertImages()
 
                 BufferedCsvReader bcr = new BufferedCsvReader()
-
                 bcr.readInnERMenn()
+                log.debug("Inserted Menn")
                 notify("attr.doattrsinsert.event", "ok")
-                notify("attr.doattrvalsinsert.event", "ok")
+                initDataService.doAttrValsInsert([:])
 
-                bcr.readInnERKvinner()
+                BufferedCsvReader bcr2 = new BufferedCsvReader()
+                bcr2.readInnERKvinner()
+                log.debug("Inserted Kvinner")
                 notify("attr.doattrsinsert.event", "ok")
-                notify("attr.doattrvalsinsert.event", "ok")
+                initDataService.doAttrValsInsert([:])
 
-                bcr.readFolkeMengdeOgBVekst()
+                BufferedCsvReader bcr3 = new BufferedCsvReader()
+                bcr3.readFolkeMengdeOgBVekst()
+                log.debug("Inserted Befolkning")
                 notify("attr.doattrsinsert.event", "ok")
-                notify("attr.doattrvalsinsert.event", "ok")
+                initDataService.doAttrValsInsert([:])
 
-                bcr.readForbrukerKraft()
+                BufferedCsvReader bcr4 = new BufferedCsvReader()
+                bcr4.readForbrukerKraft()
+                log.debug("Inserted Kraft")
                 notify("attr.doattrsinsert.event", "ok")
                 notify("attr.doattrvalsinsert.event", "ok")
 

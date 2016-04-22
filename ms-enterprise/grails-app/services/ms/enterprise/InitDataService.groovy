@@ -266,8 +266,9 @@ class InitDataService {
         List<Index> sublist = new ArrayList<>()
         for(int i = 0; i < BulkAttrInsert.attrValList.size(); i++){
             sublist.add(BulkAttrInsert.attrValList.get(i))
-            if( (i % 5000) == 0){
+            if( (i % 10000) == 0){
                 doBulkInsert(sublist);
+                log.debug("Inserted $i values to es...")
                 sublist.clear()
             }
         }
@@ -288,33 +289,6 @@ class InitDataService {
             log.error(result.jsonString)
             throw new RuntimeException(result.errorMessage)
         }
-    }
-
-    public <T> List<List<T>> split(List<T> list, int size)
-            throws NullPointerException, IllegalArgumentException {
-        if (list == null) {
-            throw new NullPointerException("The list parameter is null.");
-        }
-
-        if (size <= 0) {
-            throw new IllegalArgumentException(
-                    "The size parameter must be more than 0.");
-        }
-
-        List<List<T>> result = new ArrayList<List<T>>(size);
-
-        for (int i = 0; i < size; i++) {
-            result.add(new ArrayList<T>());
-        }
-
-        int index = 0;
-
-        for (T t : list) {
-            result.get(index).add(t);
-            index = (index + 1) % size;
-        }
-
-        return result;
     }
 
     @Selector('attr.domunicipalityinsert.event')
