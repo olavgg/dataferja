@@ -42,9 +42,6 @@ class AttributeService {
 
     private def doSave(AttributeValue attributeValue){
         if(attributeValue.validate() && attributeValue.save()){
-            log.debug("saved attribute ${attributeValue.attribute.label} " +
-                    "with value: " +
-                    "${attributeValue.number?:attributeValue.textValue}")
             BulkAttrInsert.index(attributeValue)
         }
     }

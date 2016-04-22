@@ -32,10 +32,10 @@ class FetchController {
                         "av.number as number," +
                         "av.textValue as text," +
                         "av.valueType as type" +
-                        ")" +
-                        "FROM AttributeValue av " +
-                        "WHERE av.attribute.id IN (:attrsIds) " +
-                        "AND av.municipality.id IN (:muniIds)",
+                ")" +
+                "FROM AttributeValue av " +
+                "WHERE av.attribute.id IN (:attrsIds) " +
+                "AND av.municipality.id IN (:muniIds)",
                 [
                         attrsIds: form.attr_id as List,
                         muniIds: form.municipality_id as List

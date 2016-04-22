@@ -3,6 +3,7 @@ package ms.enterprise
 import grails.async.PromiseList
 import grails.compiler.GrailsCompileStatic
 import grails.util.Environment
+import ms.enterprise.helpers.BufferedCsvReader
 import ms.enterprise.search.JestPool
 import ms.enterprise.search.SearchIndexCreator
 import org.springframework.stereotype.Component
@@ -47,6 +48,15 @@ class MainInitService {
                 notify("attr.doattrvalsinsert.event", "ok")
                 notify("attr.domunicipalityinsert.event", "ok")
                 initDataService.insertImages()
+
+                BufferedCsvReader bcr = new BufferedCsvReader()
+                bcr.readForbrukerKraft()
+                notify("attr.doattrsinsert.event", "ok")
+                notify("attr.doattrvalsinsert.event", "ok")
+
+                bcr.readFolkeMengdeOgBVekst()
+                notify("attr.doattrsinsert.event", "ok")
+                notify("attr.doattrvalsinsert.event", "ok")
             }
             list.onComplete {
                 log.info("NÅ KAN FERJÅ LEGGA FRÅ KAI!!!")

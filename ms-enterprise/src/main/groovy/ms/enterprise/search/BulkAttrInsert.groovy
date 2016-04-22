@@ -8,14 +8,7 @@ import ms.enterprise.Municipality
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-/**
- *
- * User: olav
- * Date: 19.04.16
- * Time: 16:40
- *
- */
-@CompileStatic
+
 class BulkAttrInsert {
 
     private static final Logger log =
@@ -38,6 +31,24 @@ class BulkAttrInsert {
                 .index(SearchIndexCreator.ATTR_VAL_IDX_NAME)
                 .type(SearchIndexCreator.ATTR_VAL_TYPE)
                 .id(String.valueOf(attributeValue.id))
+                .build();
+
+        attrValList.add(index)
+    }
+
+    static void index(Map<Object, Object> item){
+
+        Map<Object, Object> attrMap = new HashMap<>()
+        attrMap.put("id", item.id)
+        attrMap.put("municipality_id", item.municipality.id)
+        attrMap.put("attribute_id", item.attribute.id)
+        attrMap.put("number", item.value)
+        attrMap.put("textValue", "")
+
+        Index index = new Index.Builder(attrMap)
+                .index(SearchIndexCreator.ATTR_VAL_IDX_NAME)
+                .type(SearchIndexCreator.ATTR_VAL_TYPE)
+                .id(String.valueOf(attrMap.id))
                 .build();
 
         attrValList.add(index)

@@ -6,6 +6,7 @@ import grails.transaction.Transactional
 import io.searchbox.client.JestClient
 import io.searchbox.client.JestResult
 import io.searchbox.core.Bulk
+import io.searchbox.core.Index
 import ms.enterprise.helpers.DownloadHelper
 import ms.enterprise.init.InitImages
 import ms.enterprise.search.BulkAttrInsert
@@ -252,8 +253,24 @@ class InitDataService {
     void doAttrValsInsert(Object data){
         log.debug("Inserting ${BulkAttrInsert.attrValList.size()} " +
                 "attributes to elasticsearch.")
+
+        List<Index> sublist = new ArrayList<>()
+        for(int i = 0; i < BulkAttrInsert.attrValList.size(); i++){
+            sublist.add(BulkAttrInsert.attrValList.get(i))
+            if( (i % 5000) == 0){
+                doBulkInsert(sublist);
+                sublist.clear()
+            }
+        }
+        doBulkInsert(sublist);
+
+        BulkAttrInsert.attrValList.clear()
+        log.debug("Done inserting attribute values to elasticsearch!")
+    }
+
+    private doBulkInsert(List<Index> items){
         Bulk bulk = new Bulk.Builder()
-                .addAction(BulkAttrInsert.attrValList)
+                .addAction(items)
                 .build();
 
         JestClient client = JestPool.client
@@ -262,8 +279,33 @@ class InitDataService {
             log.error(result.jsonString)
             throw new RuntimeException(result.errorMessage)
         }
-        BulkAttrInsert.attrValList.clear()
-        log.debug("Done inserting attribute values to elasticsearch!")
+    }
+
+    public <T> List<List<T>> split(List<T> list, int size)
+            throws NullPointerException, IllegalArgumentException {
+        if (list == null) {
+            throw new NullPointerException("The list parameter is null.");
+        }
+
+        if (size <= 0) {
+            throw new IllegalArgumentException(
+                    "The size parameter must be more than 0.");
+        }
+
+        List<List<T>> result = new ArrayList<List<T>>(size);
+
+        for (int i = 0; i < size; i++) {
+            result.add(new ArrayList<T>());
+        }
+
+        int index = 0;
+
+        for (T t : list) {
+            result.get(index).add(t);
+            index = (index + 1) % size;
+        }
+
+        return result;
     }
 
     @Selector('attr.domunicipalityinsert.event')
@@ -283,5 +325,10 @@ class InitDataService {
         }
         BulkAttrInsert.municipalities.clear()
         log.debug("Done inserting municipalities to elasticsearch!")
+    }
+
+    def insertFolkOgEndringer(){
+
+
     }
 }
