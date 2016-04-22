@@ -7,7 +7,7 @@
 	<div class="w25 fleft"></div>
 	<div class="select-wrapper w75 fleft">
 		<button id="${btnId}"
-				type="button" class="dialog-btn mwrapper w75 sm-pad">
+				type="button" class="dialog-btn w100 sm-pad">
 			<span>
 				<i class="demo-icon icon-search"></i>
 				${selectBtnText}

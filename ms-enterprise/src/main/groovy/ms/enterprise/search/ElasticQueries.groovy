@@ -18,7 +18,7 @@ class ElasticQueries {
   },
   "fields": [],
   "from": 0,
-  "size": 9
+  "size": 20
 }
 """
     }
@@ -37,7 +37,7 @@ class ElasticQueries {
   },
   "fields": ["label"],
   "from": 0,
-  "size": 9
+  "size": 20
 }
 """
     }
