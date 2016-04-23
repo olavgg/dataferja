@@ -9,4 +9,12 @@ class DefaultController {
         BufferedCsvReader bcr = new BufferedCsvReader()
         bcr.readFolkeMengdeOgBVekst()
     }
+
+    def techstack(){
+
+    }
+
+    def datascience(){
+
+    }
 }
