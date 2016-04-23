@@ -7,7 +7,7 @@ html, body, textarea, input {
 }
 body{
 	background: #fff;
-	width:100%x;
+	width:100%;
 	margin-left:auto;
 	margin-right:auto;
 }
@@ -289,11 +289,14 @@ span.caret{
 	font-size:10px;
 }
 .container {
-	margin-top: 60px;
+	height:500px;
+}
+
+.ferry-container{
+	height:500px;
 }
 
 .heatmap-wrapper {
-	margin-top: 60px;
 	display: flex;
 	justify-content: center;
 	margin-right: 120px;

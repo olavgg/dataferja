@@ -1,7 +1,7 @@
 //Dataferja custom JS
 
 document.addEventListener("DOMContentLoaded", function(event) {
-
+	makeBasicChart();
 
 	new um.QueryField({
 		ele: document.getElementById("search-municipalities"),
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				$('#heatmap').show();
 				break;
 			case "menu3":
-				$('#barchart').show();
+				$('#linechart').show();
 				break;
 			case "menu4":
 				$('#machineroom').show();
@@ -319,6 +319,46 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 			}]
 		});
+
+	}
+	function makeBasicChart() {
+
+		var xScale = new Plottable.Scales.Linear();
+		var yScale = new Plottable.Scales.Linear();
+
+		var xAxis = new Plottable.Axes.Numeric(xScale, "bottom");
+		var yAxis = new Plottable.Axes.Numeric(yScale, "left");
+
+		var plot = new Plottable.Plots.Line();
+		plot.x(function(d) { return d.x; }, xScale);
+		plot.y(function(d) { return d.y; }, yScale);
+
+		var data = [
+			{ "x": 0, "y": 1 },
+			{ "x": 1, "y": 2 },
+			{ "x": 2, "y": 4 },
+			{ "x": 3, "y": 8 }
+		];
+
+		var data2 = [
+			{ "x": 0, "y": 3 },
+			{ "x": 1, "y": 6 },
+			{ "x": 2, "y": 8 },
+			{ "x": 3, "y": 7 }
+		];
+
+		var dataset = new Plottable.Dataset(data);
+		var dataset2 = new Plottable.Dataset(data2);
+
+		plot.addDataset(dataset);
+		plot.addDataset(dataset2);
+
+		var chart = new Plottable.Components.Table([
+			[yAxis, plot],
+			[null, xAxis]
+		]);
+
+		chart.renderTo("svg#tutorial-result");
 
 	}
 

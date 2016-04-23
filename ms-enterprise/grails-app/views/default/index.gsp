@@ -4,9 +4,12 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://github.highcharts.com/v3.0.2/modules/map.src.js"></script>
+
 	<asset:javascript src="dataferja.js"/>
+	<asset:javascript src="d3.js"/>
+	<asset:javascript src="plottable.js"/>
 	<asset:javascript src="ferja-varmekart.js"/>
-	%{--<asset:javascript src="ferja-temp.js"/>--}%
+
 	<title>Dataferja</title>
 	<meta name="layout" content="dataferja">
 </head>
@@ -73,8 +76,9 @@
 			<div class="heatmap-wrapper">
 				<div id="heat-container" style="height: 600px; width:60%;"></div>
 			</div>
-		<div id="barchart" class="ferry-container" style="display:none">
-			<h5>barchart goes here</h5>
+		</div>
+		<div id="linechart" class="ferry-container" style="display:none">
+			<svg id="tutorial-result" style="height:500px; width: 700px;"></svg>
 		</div>
 		<div id="machineroom" class="ferry-container" style="display:none">
 			<h5>Maskinrom</h5>

@@ -8,6 +8,7 @@
 	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<asset:stylesheet src="ferje.css"/>
+	<asset:stylesheet src="plottable.css"/>
 	<g:layoutHead/>
 </head>
 <body>
