@@ -262,7 +262,7 @@ span.caret{
 
 
 .menu {
-	margin-top:40px;
+	margin-top:5px;
 	display:flex;
 	justify-content:space-around;
 	background-color: #bfeaf8;
@@ -330,6 +330,12 @@ span.caret{
 	line-height: 22px;
 	width: 100%;
 	margin-bottom: 1em;
+}
+.app-title-container img{
+	height: 50px;
+}
+.app-title-container h1{
+	font-size: 1.2em;
 }
 
 @font-face {
