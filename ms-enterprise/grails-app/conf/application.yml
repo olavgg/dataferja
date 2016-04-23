@@ -17,7 +17,7 @@ environments:
                 host: juleferja
                 port: 9200
             dataSource:
-                dbCreate: create
+                dbCreate: update
                 url: jdbc:postgresql://juleferja:5432/juleferja
                 username: svele
                 password: kaffi
@@ -31,9 +31,14 @@ environments:
             dbCreate: update
             url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
+        elasticsearch:
+            host: cargoship3
+            port: 9200
         dataSource:
             dbCreate: update
-            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:postgresql://tank10:5432/juleferja
+            username: svele
+            password: kaffi
             properties:
                 jmxEnabled: true
                 initialSize: 5

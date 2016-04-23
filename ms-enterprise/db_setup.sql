@@ -1,7 +1,7 @@
 CREATE USER svele WITH PASSWORD 'kaffi';
 CREATE DATABASE juleferja
   WITH ENCODING='UTF8'
-       OWNER=pags
+       OWNER=svele
        TEMPLATE=template0
        LC_COLLATE='nn_NO.UTF-8'
        LC_CTYPE='nn_NO.UTF-8'
