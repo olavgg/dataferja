@@ -279,7 +279,7 @@ span.caret{
 	height:100%;
 }
 .navLink a {
-	line-height:60px;
+	line-height:30px;
 }
 .navLink:hover {
 	color: #219aff;
