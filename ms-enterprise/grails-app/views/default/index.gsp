@@ -92,7 +92,7 @@
 <div id="newAttrDl" class="um-dialog hidden">
 	<g:form controller="attribute" action="create" method="POST" name="new_attr_form">
 		<label for="attrName">
-			<g:message code="attritebute.name"/>
+			<g:message code="attribute.name"/>
 		</label>
 		<g:textField name="attrName"/>
 		<label for="formula">

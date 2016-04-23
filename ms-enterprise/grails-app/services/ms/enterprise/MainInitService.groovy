@@ -1,11 +1,7 @@
 package ms.enterprise
 
-import grails.async.PromiseList
 import grails.compiler.GrailsCompileStatic
-import grails.util.Environment
-import ms.enterprise.helpers.BufferedCsvReader
 import ms.enterprise.search.JestPool
-import ms.enterprise.search.SearchIndexCreator
 import org.springframework.stereotype.Component
 import reactor.spring.context.annotation.Consumer
 import reactor.spring.context.annotation.Selector
@@ -21,7 +17,7 @@ class MainInitService {
     def init() {
         JestPool.initialize()
 
-        if(Environment.currentEnvironment.equals(Environment.DEVELOPMENT)) {
+        /*if(Environment.currentEnvironment.equals(Environment.DEVELOPMENT)) {
             log.info('LASTER OPP FERJA MED TRAILERE SOM HAR HARDDISKER!')
 
             PromiseList list = new PromiseList()
@@ -76,6 +72,6 @@ class MainInitService {
             list.onComplete {
                 log.info("NÅ KAN FERJÅ LEGGA FRÅ KAI!!!")
             }
-        }
+        }*/
     }
 }
