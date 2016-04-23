@@ -1,7 +1,6 @@
 //Dataferja custom JS
 
 document.addEventListener("DOMContentLoaded", function(event) {
-	makeBasicChart();
 
 	new um.QueryField({
 		ele: document.getElementById("search-municipalities"),
@@ -200,20 +199,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 	});
 
+	var headerTitles = [];
+	var lineValues = [];
+
 	function renderHeatMap(obj) {
 
 		//#X-axis : Variables
-		var headerTitles = [];
 		for (var i = 0; i < obj.headers.length; i++) {
 			headerTitles.push(obj.headers[i].text);
 		}
-		console.log(headerTitles);
+		//console.log(headerTitles);
 
 		//#X-axis : Variable Meta
 		headerTitlesLength = obj.headers.length;
 		if (headerTitlesLength == 1) {
 			headerTitlesLength = 1;
-			console.log(headerTitlesLength);
+			//console.log(headerTitlesLength);
 		}
 
 		//#Y-axis : Municipalities
@@ -221,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		for (var i = 0; i < obj.rows.length; i++) {
 			rowTitles.push(obj.rows[i][0].text);
 		}
-		console.log(rowTitles);
+		//console.log(rowTitles);
 
 		// Municipality meta:
 
@@ -231,17 +232,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		// Data values:
 		var tableValues = [];
 
-		console.log(obj.rows);
+		//console.log(obj.rows);
 		values_only = []
 
 		for (var i = 0; i < obj.rows.length; i++) {
 			for (var y = 1; y < obj.rows[i].length; y++) {
-				console.log(y + " " + i + " " + obj.rows[i][y].text);
+				//console.log(y + " " + i + " " + obj.rows[i][y].text);
 				tableValues.push({col: y - 1, row: i, y: obj.rows[i][y].text});
 				values_only.push(obj.rows[i][y].text);
-				console.log(values_only);
+				//console.log(values_only);
 			}
 		}
+
+		//Some line chart data buildup:
+
+
+		for (var i = 0; i < obj.rows.length; i++ ) {
+			//for (var y = 0; y < obj.rows[i].length; y++) {
+			lineValues.push({data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6], name: 'Sola' });
+		}
+		console.log(lineValues);
 
 		var minValue = 0;
 		var maxValue = 0;
@@ -250,8 +260,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		var minValue = Math.min.apply(Math, values_only);
 		var maxValue = Math.max.apply(Math, values_only);
 
-		console.log("min: " + minValue);
-		console.log("max: " + maxValue);
+		//console.log("min: " + minValue);
+		//console.log("max: " + maxValue);
 
 		//Valueranges for color:
 
@@ -278,13 +288,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			}
 		}
 
-		console.log(colormap);
-
-
-		console.log(ranges);
-
-
-		console.log(tableValues);
+		//console.log(colormap);
+		//console.log(ranges);
+		//console.log(tableValues);
 
 		var chart = new Highcharts.Chart({
 			chart: {
@@ -331,46 +337,60 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		});
 
 	}
-	function makeBasicChart() {
 
-		var xScale = new Plottable.Scales.Linear();
-		var yScale = new Plottable.Scales.Linear();
+	var series = [];
+	series = [{
+		name: 'Sola',
+		data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+	}, {
+		name: 'Haugesund',
+		data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+	}, {
+		name: 'Kvinesdal',
+		data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+	}, {
+		name: 'Time',
+		data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+	}];
 
-		var xAxis = new Plottable.Axes.Numeric(xScale, "bottom");
-		var yAxis = new Plottable.Axes.Numeric(yScale, "left");
+	console.log(series);
+	console.log(lineValues);
 
-		var plot = new Plottable.Plots.Line();
-		plot.x(function(d) { return d.x; }, xScale);
-		plot.y(function(d) { return d.y; }, yScale);
-
-		var data = [
-			{ "x": 0, "y": 1 },
-			{ "x": 1, "y": 2 },
-			{ "x": 2, "y": 4 },
-			{ "x": 3, "y": 8 }
-		];
-
-		var data2 = [
-			{ "x": 0, "y": 3 },
-			{ "x": 1, "y": 6 },
-			{ "x": 2, "y": 8 },
-			{ "x": 3, "y": 7 }
-		];
-
-		var dataset = new Plottable.Dataset(data);
-		var dataset2 = new Plottable.Dataset(data2);
-
-		plot.addDataset(dataset);
-		plot.addDataset(dataset2);
-
-		var chart = new Plottable.Components.Table([
-			[yAxis, plot],
-			[null, xAxis]
-		]);
-
-		chart.renderTo("svg#tutorial-result");
-
-	}
+	$(function () {
+		$('#linecontainer').highcharts({
+			title: {
+				text: 'Energy usage - public buildings kWh m2',
+				x: -20 //center
+			},
+			subtitle: {
+				text: '',
+				x: -20
+			},
+			xAxis: {
+				categories: []
+			},
+			yAxis: {
+				title: {
+					text: 'kWh'
+				},
+				plotLines: [{
+					value: 0,
+					width: 1,
+					color: '#808080'
+				}]
+			},
+			tooltip: {
+				valueSuffix: '°C'
+			},
+			legend: {
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'middle',
+				borderWidth: 0
+			},
+			series: series
+		});
+	});
 
 });
 

@@ -78,10 +78,11 @@
 			</div>
 		</div>
 		<div id="linechart" class="ferry-container" style="display:none">
-			<svg id="tutorial-result" style="height:500px; width: 700px;"></svg>
+			<div id="linecontainer" style="width: 900px; height: 500px; margin: 0 auto"></div>
 		</div>
 		<div id="machineroom" class="ferry-container" style="display:none">
 			<h5>Maskinrom</h5>
+			<script src="https://code.highcharts.com/modules/exporting.js"></script>
 		</div>
 
 
