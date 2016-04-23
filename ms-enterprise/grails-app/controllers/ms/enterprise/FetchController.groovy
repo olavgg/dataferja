@@ -11,7 +11,13 @@ class FetchController {
 
         def data = [:]
         data.headers = []
-        List<Attribute> attributes = Attribute.getAll(form.attr_id)
+        List<Attribute> attributes = Attribute.findAll(
+                "FROM Attribute a " +
+                "WHERE a.id in :ids " +
+                "ORDER BY a.id ASC",
+                [ids: form.attr_id as List]
+        )
+        log.debug(attributes)
         int i = 0;
         for(char alphabet = 'A'; alphabet <= 'Z';alphabet++) {
             if(i < attributes.size()){
@@ -35,7 +41,8 @@ class FetchController {
                 ")" +
                 "FROM AttributeValue av " +
                 "WHERE av.attribute.id IN (:attrsIds) " +
-                "AND av.municipality.id IN (:muniIds)",
+                "AND av.municipality.id IN (:muniIds) " +
+                "ORDER BY av.attribute.id ASC",
                 [
                         attrsIds: form.attr_id as List,
                         muniIds: form.municipality_id as List
