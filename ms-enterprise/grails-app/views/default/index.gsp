@@ -88,7 +88,30 @@
 	</div>
 </g:form>
 
+<div id="newAttrDl" class="um-dialog hidden">
+	<g:form controller="attribute" action="create" method="POST" name="new_attr_form">
+		<label for="attrName">
+			<g:message code="attritebute.name"/>
+		</label>
+		<g:textField name="attrName"/>
+		<label for="formula">
+			<g:message code="excel.formula"/>
+		</label>
+		<g:textField name="formula"/>
 
+		<button id="createAttrBtn"
+				class="blue"
+				type="button">
+			<span class="text"><g:message code="create.attribute" /></span>
+			<i class="demo-icon icon-spin5 btn-spinner"></i>
+		</button>
+		<script type="application/javascript">
+			document.getElementById("createAttrBtn").addEventListener('click', function (e) {
+				um.getForm(e.target).parentNode.classList.add('hidden');
+			});
+		</script>
+	</g:form>
+</div>
 
 
 

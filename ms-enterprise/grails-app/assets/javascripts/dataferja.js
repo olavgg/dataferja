@@ -132,8 +132,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			cell.setAttribute('data-label-id', obj.headers[i].id);
 			thRow.appendChild(cell);
 		}
-		// Add empty header cell
+		// Add empty header cell with plus icon
 		cell = document.createElement('TH');
+		var plusIcon = document.createElement('I');
+		plusIcon.className = "demo-icon icon-plus-circled";
+		plusIcon.addEventListener('click', function(e){
+			showAddAttributeDialog();
+		});
+		cell.appendChild(plusIcon);
 		thRow.appendChild(cell);
 
 		// Add rows
@@ -159,6 +165,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		var container = document.getElementById('datatable');
 		container.innerHTML = "";
 		container.appendChild(tableEle);
+	}
+
+	function showAddAttributeDialog(){
+		document.getElementById('newAttrDl').classList.remove('hidden');
 	}
 
 	var navLinks = $('.navLink');

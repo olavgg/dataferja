@@ -69,6 +69,8 @@ button span.text{
 }
 label{
 	font-weight: 600;
+	display: block;
+	color: #666;
 }
 .sm-pad{
 	padding: 6px 12px;
@@ -306,6 +308,30 @@ span.caret{
 	color:#fff;
 }
 
+.um-dialog{
+	border: 1px solid #ababc4;
+	border-radius: 4px;
+	background: #f9f9f9;
+	position: fixed;
+	top:50%;
+	left:50%;
+	width:800px;
+	margin-left: -400px;
+	margin-top: -40px;
+	padding: 1em;
+}
+
+.um-dialog input{
+	font-size: 1.1em;
+	border: 1px solid #c4bec1;
+	box-sizing: border-box;
+	padding: 0.2em 0.4em;
+	color: #666;
+	line-height: 22px;
+	width: 100%;
+	margin-bottom: 1em;
+}
+
 @font-face {
 	font-family: 'fawes';
 	src: url('./assets/fawes.eot?59960006');
@@ -387,7 +413,7 @@ span.caret{
 .icon-trash-empty:before { content: '\e815'; } /* '' */
 .icon-attention:before { content: '\e816'; } /* '' */
 .icon-attention-circled:before { content: '\e817'; } /* '' */
-.icon-plus-circled:before { content: '\e818'; } /* '' */
+.icon-plus-circled:before { content: '\e818'; cursor:pointer;} /* '' */
 .icon-chat-empty:before { content: '\e819'; } /* '' */
 .icon-user:before { content: '\e81a'; } /* '' */
 .icon-user-plus:before { content: '\e81b'; } /* '' */
